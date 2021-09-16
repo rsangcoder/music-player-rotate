@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+            integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="main_div">
+            <div class="music_container">
+                <h2 id="title"> Optimistic</h2>
+                <h3 id="artist">https://soundcloud.com/fm_freemusic</h3>
+                <div class="img_container">
+                    <img src="images/first.jpg" alt="" />
+                </div>
+                <audio src="audio/first.mp3"></audio>
+                <!-- controls -->
+
+                <div class="music_controls">
+                    <i class="fas fa-backward" id="previ" title="Privious"></i>
+                    <i class="fas fa-play main_button" id="play" title="Play"></i>
+                    <i class="fas fa-forward" id="next" title="Next"></i>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const music = document.querySelector('audio');
+            const img = document.querySelector('img');
+            const title = document.getElementById('title');
+            const artist = document.getElementById('artist');
+            const previ = document.getElementById('previ');
+            const next = document.getElementById('next');
+            const play = document.getElementById('play');
+            const containet = document.querySelector('.music_container');
+            const songs = [
+                {
+                    name: 'first',
+                    title: 'Inspiring Optimistic',
+                    artist: 'https://soundcloud.com/fm_freemusic',
+                    image: 'first',
+                    background: '#' + ((Math.random() * 0xffffff) << 0).toString(16),
+                },
+                {
+                    name: 'second',
+                    title: 'Inspiring Optimistic',
+                    artist: 'https://soundcloud.com/fm_freemusic',
+                    image: 'second',
+                    background: '#' + ((Math.random() * 0xffffff) << 0).toString(16),
+                }
+            ];
+            // for Play
+            let isPlaying = false;
+            const playMusic = () => {
+                isPlaying = true;
+                music.play();
+                play.classList.replace('fa-play', 'fa-pause');
+                img.classList.add('anime');
+            };
+
+            // for Pause
+            const pauseMusic = () => {
+                isPlaying = false;
+                music.pause();
+                play.classList.replace('fa-pause', 'fa-play');
+                img.classList.remove('anime');
+            };
+            play.addEventListener('click', () => {
+                console.log(isPlaying);
+                if (isPlaying) {
+                    pauseMusic();
+                } else {
+                    playMusic();
+                }
+            });
+            // next-privious music
+            const loadSong = (songs) => {
+                title.textContent = songs.title;
+                artist.textContent = songs.artist;
+                music.src = `audio/${songs.name}.mp3`;
+                img.src = `images/${songs.image}.jpg`;
+                containet.style.background = `${songs.background}`;
+            };
+            songIndex = 0;
+            // loadSong(songs[0]);
+            const nextSong = () => {
+                songIndex = (songIndex + 1) % songs.length;
+                loadSong(songs[songIndex]);
+                playMusic();
+            };
+            const previSong = () => {
+                console.table(songIndex - 1 + songs.length);
+                songIndex = (songIndex - 1 + songs.length) % songs.length;
+                loadSong(songs[songIndex]);
+                playMusic();
+            };
+
+            next.addEventListener('click', nextSong);
+            previ.addEventListener('click', previSong);
+        </script>
+    </body>
+</html>
